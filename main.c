@@ -82,16 +82,22 @@ int main(int argc, char **argv) {
 
     while (1) {
       size_t items_read = fread((void *)buffer, 1, BYTE_WIDTH, f);
+      printf("%07x\t", 0);
       for (size_t j = 0; j < items_read; ++j) {
         char *color = "";
         unsigned char byte = buffer[j]; 
-        characters[j % args.width] = (char) byte;
+        if (byte >= 0x20 && byte < 0x7E) {
+          characters[j % args.width] = (char) byte;
+        }
+        else {
+          characters[j % args.width] = '.';
+        }
         if (byte > 0 && args.colored_output) {
           color = ANSI_COLOR_RED;
         }
         if ((j + 1) % args.width == 0 || (j + 1 == items_read && items_read < BYTE_WIDTH)) {
           if (args.display_text) {
-            printf("%s%02x%s|%s\n", color, byte, ANSI_COLOR_RESET, characters); 
+            printf("%s%02x%s|%s\n%07x\t", color, byte, ANSI_COLOR_RESET, characters, j + 1); 
             memset(characters, 0, args.width + 1);
           }
           else {
