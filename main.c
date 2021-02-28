@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
         }
         if ((j + 1) % args.width == 0 || (j + 1 == items_read && items_read < BYTE_WIDTH)) {
           if (args.display_text) {
-            printf("%s%02x%s|%s\n%07x\t", color, byte, ANSI_COLOR_RESET, characters, j + 1); 
+            printf("%s%02x%s|%s\n%07x\t", color, byte, ANSI_COLOR_RESET, characters, (unsigned int)j + 1); 
             memset(characters, 0, args.width + 1);
           }
           else {
